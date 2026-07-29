@@ -1,0 +1,11 @@
+{
+  "name": "Remix Smart Kisan AI",
+  "description": "Modern AI-powered Agriculture application for crop disease detection, weather forecast, market mandi prices, crop \u0026 fertilizer recommendations, smart irrigation, government schemes, and AI voice chatbot in English, Hindi, and Marathi.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
