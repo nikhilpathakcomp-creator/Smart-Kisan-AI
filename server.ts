@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
@@ -6,7 +7,7 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { initialMandiPrices, initialSchemes, initialWeatherData, initialNotifications } from './src/data/mockData';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'smart-kisan-ai-jwt-secret-key-2026';
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 app.use(cors());
@@ -609,9 +610,9 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Smart Kisan AI Backend running on http://0.0.0.0:${PORT}`);
-  });
+  app.listen(PORT, () => {
+  console.log(`Smart Kisan AI Backend running on port ${PORT}`);
+});
 }
 
 startServer();
