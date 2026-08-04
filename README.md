@@ -1,20 +1,39 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Smart Kisan AI 🌾
 
-# Run and deploy your AI Studio app
+Smart Kisan AI is an AI-powered agriculture application that helps farmers with:
 
-This contains everything you need to run your app locally.
+- 🌱 Crop Disease Detection
+- 🌦 Weather Forecast
+- 💰 Mandi Price Information
+- 🧪 Fertilizer Recommendations
+- 🤖 AI Farming Assistant
 
-View your app in AI Studio: https://ai.studio/apps/91f6e3b3-4655-44b2-b364-c1103486cb83
+## Features
 
-## Run Locally
+- AI-based crop analysis
+- Real-time weather updates
+- Market price information
+- Easy-to-use interface
+- Fast and secure
 
-**Prerequisites:**  Node.js
+## Installation
 
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Technologies Used
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Express.js
+- Google Gemini API
+
+## License
+
+MIT License
+
+Developed by Nikhil Pathak

@@ -23,7 +23,7 @@ function getGenAI() {
     apiKey,
     httpOptions: {
       headers: {
-        'User-Agent': 'aistudio-build',
+        'User-Agent': 'smart-kisan-ai',
       },
     },
   });
