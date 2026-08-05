@@ -25,15 +25,28 @@ export const api = {
   },
 
   async getMe() {
-  const res = await fetch(`${API_BASE}/api/auth/me`);
-  return res.json();
-},
+    const res = await fetch(`${API_BASE}/api/auth/me`);
+    return res.json();
+  },
+
   // Disease Detection AI
-  async detectDisease(imageBase64: string, cropHint?: string, language: string = 'en'): Promise<DiseaseAnalysisResult> {
+  async detectDisease(
+    imageBase64: string,
+    cropHint?: string,
+    language: string = 'en'
+  ): Promise<DiseaseAnalysisResult> {
     const res = await fetch(`${API_BASE}/api/ai/disease-detect`, {
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageBase64, cropHint, language }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        imageBase64,
+        cropHint,
+        language,
+      }),
     });
+
     return res.json();
   },
 
@@ -49,11 +62,16 @@ export const api = {
 
   // Weather
   async getWeather(district?: string): Promise<WeatherData> {
-   const res = await fetch(`${API_BASE}${url}`);
+    const url = district
+      ? `/api/weather?district=${encodeURIComponent(district)}`
+      : '/api/weather';
+
+    const res = await fetch(`${API_BASE}${url}`);
     return res.json();
   },
 
   // Crop Recommendation
+    // Crop Recommendation
   async getCropRecommendations(params: any) {
     const res = await fetch(`${API_BASE}/api/agriculture/crop-recommendation`, {
       method: 'POST',
@@ -73,17 +91,19 @@ export const api = {
     return res.json();
   },
 
-  // Fertilizer Recommendation & OCR
+  // Fertilizer Recommendation
   async getFertilizerGuide(params: any) {
-   const res = await fetch(`${API_BASE}/api/ai/ocr-fertilizer`, {
+    const res = await fetch(`${API_BASE}/api/agriculture/fertilizer-recommendation`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
     });
     return res.json();
   },
 
+  // OCR Fertilizer Label
   async ocrFertilizerLabel(imageBase64: string) {
-    const res = await fetch('/api/ai/ocr-fertilizer', {
+    const res = await fetch(`${API_BASE}/api/ai/ocr-fertilizer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageBase64 }),
@@ -93,16 +113,16 @@ export const api = {
 
   // Mandi Prices
   async getMandiPrices(query?: string): Promise<MandiPriceItem[]> {
-  const url = query
-    ? `/api/mandi-prices?query=${encodeURIComponent(query)}`
-    : '/api/mandi-prices';
+    const url = query
+      ? `/api/mandi-prices?query=${encodeURIComponent(query)}`
+      : '/api/mandi-prices';
 
-  const res = await fetch(`${API_BASE}${url}`);
-  return res.json();
-},
+    const res = await fetch(`${API_BASE}${url}`);
+    return res.json();
+  },
 
   async addMandiPrice(data: any) {
-    const res = await fetch('/api/mandi-prices', {
+    const res = await fetch(`${API_BASE}/api/mandi-prices`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -110,15 +130,16 @@ export const api = {
     return res.json();
   },
 
-  // Schemes
+    // Schemes
   async getSchemes() {
-    const res = await fetch('/api/schemes');
+    const res = await fetch(`${API_BASE}/api/schemes`);
     return res.json();
   },
 
   // Farmer Profile
   async getProfile() {
     const res = await fetch(`${API_BASE}/api/farmer/profile`);
+    return res.json();
   },
 
   async updateProfile(data: any) {
@@ -131,16 +152,21 @@ export const api = {
   },
 
   // Notifications
-  // Notifications
-async getNotifications() {
-  const res = await fetch(`${API_BASE}/api/notifications`);
-  return res.json();
-},
+  async getNotifications() {
+    const res = await fetch(`${API_BASE}/api/notifications`);
+    return res.json();
+  },
 
-async markNotificationsRead() {
-  const res = await fetch(`${API_BASE}/api/notifications/mark-read`, {
-    method: 'PUT',
-  });
-  return res.json();
-},
-}
+  async markNotificationsRead() {
+    const res = await fetch(`${API_BASE}/api/notifications/mark-read`, {
+      method: 'PUT',
+    });
+    return res.json();
+  },
+
+  // Admin
+  async getAdminAnalytics() {
+    const res = await fetch(`${API_BASE}/api/admin/analytics`);
+    return res.json();
+  }
+};
