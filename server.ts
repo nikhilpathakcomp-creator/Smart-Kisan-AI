@@ -478,17 +478,19 @@ Return ONLY JSON with these exact keys:
 }`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
-          contents: [
-            {
-              parts: [
-                { inlineData: { mimeType: imgData.mimeType, data: imgData.data } },
-                { text: prompt }
-              ]
-            }
-          ],
-          config: { responseMimeType: 'application/json' }
-        });
+  model: 'gemini-2.5-flash',
+  contents: [
+    {
+      parts: [
+        { inlineData: { mimeType: imgData.mimeType, data: imgData.data } },
+        { text: prompt }
+      ]
+    }
+  ],
+  config: {
+    responseMimeType: 'application/json'
+  }
+});
 
         return res.json(JSON.parse(response.text || '{}'));
       }
