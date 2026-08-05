@@ -16,15 +16,19 @@ app.use(express.json({ limit: '25mb' }));
 // Lazy GoogleGenAI client helper
 function getGenAI() {
   const apiKey = process.env.GEMINI_API_KEY;
+
+  console.log("Gemini Key Exists:", !!apiKey);
+
   if (!apiKey) {
-    console.warn('GEMINI_API_KEY is not set. Gemini API calls will fallback to intelligent domain defaults.');
+    console.warn("GEMINI_API_KEY not found");
     return null;
   }
+
   return new GoogleGenAI({
     apiKey,
     httpOptions: {
       headers: {
-        'User-Agent': 'smart-kisan-ai',
+        "User-Agent": "smart-kisan-ai",
       },
     },
   });
