@@ -210,9 +210,9 @@ Return ONLY a valid JSON object matching this schema:
 }`;
         console.log("Using model:", "gemini-2.5-flash");
         console.log("Image mime:", imgData.mimeType);
-        
+
         const response = await ai.models.generateContent({
-  model: 'gemini-2.5-flash',
+  model: 'gemini-2.5-flash-lite',
   contents: [
     {
       parts: [
