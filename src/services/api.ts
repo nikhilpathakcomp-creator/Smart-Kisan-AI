@@ -30,8 +30,7 @@ export const api = {
 },
   // Disease Detection AI
   async detectDisease(imageBase64: string, cropHint?: string, language: string = 'en'): Promise<DiseaseAnalysisResult> {
-    const res = await fetch(`${API_BASE}/api/ai/disease-detection`, {
-      method: 'POST',
+    const res = await fetch(`${API_BASE}/api/ai/disease-detect`, {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageBase64, cropHint, language }),
     });
