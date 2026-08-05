@@ -210,19 +210,19 @@ Return ONLY a valid JSON object matching this schema:
 }`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash'
-          contents: [
-            {
-              parts: [
-                { inlineData: { mimeType: imgData.mimeType, data: imgData.data } },
-                { text: prompt }
-              ]
-            }
-          ],
-          config: {
-            responseMimeType: 'application/json'
-          }
-        });
+  model: 'gemini-2.5-flash',
+  contents: [
+    {
+      parts: [
+        { inlineData: { mimeType: imgData.mimeType, data: imgData.data } },
+        { text: prompt }
+      ]
+    }
+  ],
+  config: {
+    responseMimeType: 'application/json'
+  }
+});
 
         const jsonText = response.text || '{}';
         const parsed = JSON.parse(jsonText);
