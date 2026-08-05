@@ -17,10 +17,10 @@ app.use(express.json({ limit: '25mb' }));
 function getGenAI() {
   const apiKey = process.env.GEMINI_API_KEY;
 
-  console.log("Gemini Key Exists:", !!apiKey);
+  console.log("Gemini Key:", apiKey);
 
   if (!apiKey) {
-    console.warn("GEMINI_API_KEY not found");
+    console.warn("GEMINI_API_KEY is not set.");
     return null;
   }
 
