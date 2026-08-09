@@ -180,69 +180,6 @@ app.get('/api/auth/me', authenticateToken, (req, res) => {
   res.json({ user: userDb });
 });
 
-// === AI CROP DISEASE DETECTION API ===
-app.post('/api/ai/disease-detect', async (req, res) => {
-  const { imageBase64, cropHint, language } = req.body;
-  const ai = getGenAI();
-
-  if (ai && imageBase64) {
-    try {
-      const imgData = await getImageBase64AndMime(imageBase64);
-      if (imgData) {
-        const prompt = `You are a world-class plant pathologist and agricultural AI specialist for Indian farming.
-Analyze this crop leaf image.
-Identify the disease or condition.
-Language preference for response text: ${language || 'English'} (Provide clear text in this language or English).
-Return ONLY a valid JSON object matching this schema:
-{
-  "cropName": "Name of crop",
-  "diseaseName": "Name of disease or Healthy",
-  "confidenceScore": number between 80 and 99,
-  "severity": "Low" | "Moderate" | "High" | "Severe",
-  "symptoms": ["symptom 1", "symptom 2"],
-  "causes": ["cause 1", "cause 2"],
-  "prevention": ["prevention step 1", "prevention step 2"],
-  "treatments": {
-    "organic": ["organic spray 1"],
-    "chemical": ["chemical fungicide 1"]
-  },
-  "recommendedProducts": ["Product Name 1", "Product Name 2"]
-}`;
-        console.log("Using model:", "gemini-2.5-flash");
-        console.log("Image mime:", imgData.mimeType);
-
-        const response = await ai.models.generateContent({
-  model: 'gemini-2.5-flash-lite',
-  contents: [
-    {
-      parts: [
-        { inlineData: { mimeType: imgData.mimeType, data: imgData.data } },
-        { text: prompt }
-      ]
-    }
-  ],
-  config: {
-    responseMimeType: 'application/json'
-  }
-});
-
-        const jsonText = response.text || '{}';
-        const parsed = JSON.parse(jsonText);
-        const report = {
-          id: `rep_${Date.now()}`,
-          ...parsed,
-          analyzedAt: new Date().toLocaleString(),
-          imageUrl: imageBase64.length < 500 ? imageBase64 : 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600&q=80'
-        };
-
-        savedReportsStore.unshift(report);
-        return res.json(report);
-      }
-    } catch (err) {
-      console.error('Gemini vision disease detection error:', err);
-    }
-  }
-
   // Smart fallback analysis if image is preset or AI key unavailable
   const isHealthy = cropHint?.toLowerCase().includes('healthy') || cropHint?.toLowerCase().includes('maize');
   const crop = cropHint?.split(' ')[0] || 'Crop Leaf';
@@ -273,7 +210,7 @@ Return ONLY a valid JSON object matching this schema:
 
   savedReportsStore.unshift(report);
   res.json(report);
-});
+
 
 // === AI CHATBOT & VOICE ASSISTANT API ===
 app.post('/api/ai/chatbot', async (req, res) => {
