@@ -299,15 +299,133 @@ return res.status(503).json({
   
 
 
-
+const districtCoordinates: Record<string, { lat: number; lon: number }> = {
+  Ahilyanagar: { lat: 19.0948, lon: 74.7480 },
+  Akola: { lat: 20.7002, lon: 77.0082 },
+  Amravati: { lat: 20.9374, lon: 77.7796 },
+  'Chhatrapati Sambhajinagar': { lat: 19.8762, lon: 75.3433 },
+  Beed: { lat: 18.9891, lon: 75.7601 },
+  Bhandara: { lat: 21.1700, lon: 79.6500 },
+  Buldhana: { lat: 20.5293, lon: 76.1840 },
+  Chandrapur: { lat: 19.9700, lon: 79.3000 },
+  Dhule: { lat: 20.9042, lon: 74.7749 },
+  Gadchiroli: { lat: 20.1809, lon: 80.0000 },
+  Gondia: { lat: 21.4624, lon: 80.2209 },
+  Hingoli: { lat: 19.7170, lon: 77.1500 },
+  Jalgaon: { lat: 21.0077, lon: 75.5626 },
+  Jalna: { lat: 19.8347, lon: 75.8816 },
+  Kolhapur: { lat: 16.7050, lon: 74.2433 },
+  Latur: { lat: 18.4088, lon: 76.5604 },
+  Mumbai: { lat: 19.0760, lon: 72.8777 },
+  Nagpur: { lat: 21.1458, lon: 79.0882 },
+  Nanded: { lat: 19.1383, lon: 77.3210 },
+  Nandurbar: { lat: 21.3667, lon: 74.2333 },
+  Nashik: { lat: 20.0059, lon: 73.7910 },
+  Dharashiv: { lat: 18.1860, lon: 76.0419 },
+  Palghar: { lat: 19.6967, lon: 72.7653 },
+  Parbhani: { lat: 19.2608, lon: 76.7750 },
+  Pune: { lat: 18.5204, lon: 73.8567 },
+  Raigad: { lat: 18.6414, lon: 72.8722 },
+  Ratnagiri: { lat: 16.9902, lon: 73.3120 },
+  Sangli: { lat: 16.8524, lon: 74.5815 },
+  Satara: { lat: 17.6805, lon: 74.0183 },
+  Sindhudurg: { lat: 16.3492, lon: 73.5594 },
+  Solapur: { lat: 17.6599, lon: 75.9064 },
+  Thane: { lat: 19.2183, lon: 72.9781 },
+  Wardha: { lat: 20.7453, lon: 78.6022 },
+  Washim: { lat: 20.1110, lon: 77.1330 },
+  Yavatmal: { lat: 20.3888, lon: 78.1204 }
+};
 // === WEATHER API ===
-app.get('/api/weather', (req, res) => {
-  const district = (req.query.district as string) || userDb.location.district;
-  res.json({
-    ...initialWeatherData,
-    city: district,
-    state: userDb.location.state
-  });
+function getWeatherCondition(code: number): string {
+  if (code === 0) return 'Clear Sky';
+  if (code === 1) return 'Mainly Clear';
+  if (code === 2) return 'Partly Cloudy';
+  if (code === 3) return 'Overcast';
+
+  if ([45, 48].includes(code)) return 'Foggy';
+
+  if ([51, 53, 55].includes(code)) return 'Drizzle';
+
+  if ([56, 57].includes(code)) return 'Freezing Drizzle';
+
+  if ([61, 63, 65].includes(code)) return 'Rain';
+
+  if ([66, 67].includes(code)) return 'Freezing Rain';
+
+  if ([71, 73, 75, 77].includes(code)) return 'Snow';
+
+  if ([80, 81, 82].includes(code)) return 'Rain Showers';
+
+  if ([85, 86].includes(code)) return 'Snow Showers';
+
+  if ([95, 96, 99].includes(code)) return 'Thunderstorm';
+
+  return 'Unknown Weather';
+}
+// === LIVE WEATHER API ===
+app.get('/api/weather', async (req, res) => {
+  try {
+    const district =
+      (req.query.district as string) || userDb.location.district;
+
+    const coordinates =
+        districtCoordinates[district] || districtCoordinates.Nashik;
+
+    const latitude = coordinates.lat;
+    const longitude = coordinates.lon;
+
+    const url =
+      `https://api.open-meteo.com/v1/forecast` +
+      `?latitude=${latitude}` +
+      `&longitude=${longitude}` +
+      `&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m` +
+      `&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,precipitation_sum` +
+      `&timezone=Asia%2FKolkata` +
+      `&forecast_days=7`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Weather API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    res.json({
+      city: district,
+      state: 'Maharashtra',
+
+      tempC: data.current.temperature_2m,
+      condition: getWeatherCondition(data.current.weather_code),
+      icon: 'cloud-sun',
+      humidity: data.current.relative_humidity_2m,
+      windKmvh: data.current.wind_speed_10m,
+      rainfallMm: data.current.precipitation,
+      uvIndex: 0,
+
+      alerts: [],
+
+      forecast: data.daily.time.map((date: string, i: number) => ({
+        day: i === 0 ? 'Today' : new Date(date).toLocaleDateString('en-IN', {
+          weekday: 'short'
+        }),
+        date,
+        highC: data.daily.temperature_2m_max[i],
+        lowC: data.daily.temperature_2m_min[i],
+        condition: getWeatherCondition(data.daily.weather_code[i]),
+        rainProb: data.daily.precipitation_probability_max[i],
+        icon: 'cloud-sun'
+      }))
+    });
+
+  } catch (error) {
+    console.error('Weather API error:', error);
+
+    res.status(500).json({
+      error: 'Unable to fetch live weather data'
+    });
+  }
 });
 
 // === CROP RECOMMENDATION API ===

@@ -38,30 +38,6 @@ export const sampleCropPhotos = [
   }
 ];
 
-export const initialWeatherData: WeatherData = {
-  city: 'Nashik',
-  state: 'Maharashtra',
-  tempC: 28,
-  condition: 'Partly Cloudy',
-  icon: 'cloud-sun',
-  humidity: 68,
-  windKmvh: 14,
-  rainfallMm: 4.2,
-  uvIndex: 6,
-  alerts: [
-    'Moderate rain expected on Thursday evening. Delay pesticide spraying.',
-    'High humidity alert: Monitor grapes & tomatoes for downy mildew.'
-  ],
-  forecast: [
-    { day: 'Today', date: '29 Jul', highC: 30, lowC: 22, condition: 'Partly Cloudy', rainProb: 20, icon: 'cloud-sun' },
-    { day: 'Thu', date: '30 Jul', highC: 27, lowC: 21, condition: 'Moderate Rain', rainProb: 80, icon: 'cloud-rain' },
-    { day: 'Fri', date: '31 Jul', highC: 26, lowC: 20, condition: 'Heavy Showers', rainProb: 90, icon: 'cloud-lightning' },
-    { day: 'Sat', date: '01 Aug', highC: 28, lowC: 21, condition: 'Light Rain', rainProb: 40, icon: 'cloud-drizzle' },
-    { day: 'Sun', date: '02 Aug', highC: 31, lowC: 22, condition: 'Sunny', rainProb: 10, icon: 'sun' },
-    { day: 'Mon', date: '03 Aug', highC: 32, lowC: 23, condition: 'Clear Sky', rainProb: 5, icon: 'sun' },
-    { day: 'Tue', date: '04 Aug', highC: 29, lowC: 22, condition: 'Scattered Clouds', rainProb: 25, icon: 'cloud' }
-  ]
-};
 
 export const initialMandiPrices: MandiPriceItem[] = [
   {
