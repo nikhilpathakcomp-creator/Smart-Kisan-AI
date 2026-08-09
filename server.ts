@@ -205,7 +205,7 @@ Important conversation rules:
   if (ai) {
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: [
           ...((history || []).map((h: any) => ({
             role: h.sender === 'user' ? 'user' : 'model',
