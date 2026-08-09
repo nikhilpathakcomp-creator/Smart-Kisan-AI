@@ -284,16 +284,21 @@ if (
     ]
   });
 }
-
-res.json({
-  reply: `Namaste! Regarding "${message}":\n\n1. Ensure soil testing is conducted every season.\n2. Maintain proper drainage during monsoon to prevent root rot.\n3. Check nearest APMC mandi rates before selling harvest.\n4. Apply for PM-Kisan subsidy online or at your nearest CSC centre.`,
-
+// Gemini unavailable fallback
+return res.status(503).json({
+  reply: 'AI service is temporarily unavailable. Please try again shortly.',
   suggestedActions: [
     'Check Mandi prices near me',
     'Recommended crops for Kharif season'
   ]
 });
+
 });
+
+
+  
+
+
 
 // === WEATHER API ===
 app.get('/api/weather', (req, res) => {
