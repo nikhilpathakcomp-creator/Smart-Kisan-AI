@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { LayoutDashboard, Camera, Bot, TrendingUp, User, CloudSun, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, Bot, TrendingUp, User, CloudSun, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface BottomNavProps {
@@ -14,7 +14,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
 
   const navItems = [
     { id: 'dashboard', label: t('dashboard'), icon: LayoutDashboard },
-    { id: 'disease', label: 'Disease AI', icon: Camera },
+    
     { id: 'chatbot', label: 'Krishi Bot', icon: Bot },
     { id: 'mandi', label: t('marketPrices'), icon: TrendingUp },
     { id: user?.role === 'admin' ? 'admin' : 'profile', label: user?.role === 'admin' ? 'Admin' : t('profile'), icon: user?.role === 'admin' ? ShieldCheck : User },
