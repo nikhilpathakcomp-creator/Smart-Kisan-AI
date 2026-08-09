@@ -4,7 +4,7 @@ import { api } from '../../services/api';
 import { FertilizerRecommendationResult } from '../../types';
 import {
   FlaskConical,
-  Camera,
+  
   Sparkles,
   RefreshCw,
   ScanText,

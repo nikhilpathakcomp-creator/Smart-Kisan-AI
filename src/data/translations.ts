@@ -20,7 +20,7 @@ export const translations: Record<Language, Record<string, string>> = {
     welcomeFarmer: 'Welcome back, Kisan!',
     farmSummary: 'Farm Health Overview',
     quickActions: 'Quick AI Tools',
-    scanDisease: 'Scan Crop Disease',
+    
     askChatbot: 'Ask Krishi Mitra 24/7',
     todayWeather: 'Today\'s Weather',
     nearbyMandis: 'Nearby Mandi Rates',

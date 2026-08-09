@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
 import { MandiPriceItem, WeatherData } from '../../types';
 import {
-  Camera,
+  
   Bot,
   CloudSun,
   Sprout,
@@ -63,14 +63,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
             </p>
           </div>
 
-          <button
-            id="dash-scan-now-btn"
-            onClick={() => setActiveTab('disease')}
-            className="flex items-center gap-2 bg-emerald-400 text-[#1a3c34] hover:bg-emerald-300 px-4 py-2.5 rounded-full font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95"
-          >
-            <Camera className="w-4 h-4" />
-            <span>{t('scanDisease')}</span>
-          </button>
+          
         </div>
       </div>
 
@@ -86,23 +79,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {/* Tool 1: Disease AI */}
-          <button
-            id="tool-disease-detect"
-            onClick={() => setActiveTab('disease')}
-            className="group bg-white p-4 rounded-[1.25rem] border border-slate-200/80 hover:border-emerald-600 hover:shadow-md transition-all text-left flex flex-col justify-between"
-          >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#1a3c34] flex items-center justify-center mb-3 group-hover:bg-[#1a3c34] group-hover:text-emerald-400 transition-colors">
-              <Camera className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-800 text-sm group-hover:text-[#1a3c34] transition-colors">
-                {t('diseaseDetect')}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5 font-normal line-clamp-2">
-                Photo scan leaf disease, get treatment & chemicals.
-              </p>
-            </div>
-          </button>
+          
 
           {/* Tool 2: AI Voice Chatbot */}
           <button
