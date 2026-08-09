@@ -180,37 +180,7 @@ app.get('/api/auth/me', authenticateToken, (req, res) => {
   res.json({ user: userDb });
 });
 
-  // Smart fallback analysis if image is preset or AI key unavailable
-  const isHealthy = cropHint?.toLowerCase().includes('healthy') || cropHint?.toLowerCase().includes('maize');
-  const crop = cropHint?.split(' ')[0] || 'Crop Leaf';
-  const report = {
-    id: `rep_${Date.now()}`,
-    cropName: crop,
-    diseaseName: isHealthy ? 'Healthy Plant - No Infection' : 'Early Blight / Leaf Spot Infection',
-    confidenceScore: 92,
-    severity: isHealthy ? 'Low' : 'Moderate',
-    symptoms: isHealthy
-      ? ['Vibrant green pigmentation', 'Smooth blade structure free from pustules or rot']
-      : ['Concentrated brown target spots with surrounding yellow halos', 'Defoliation starting from lower leaves'],
-    causes: isHealthy
-      ? ['Optimal soil nutrition and balanced moisture']
-      : ['High humidity combined with stagnant soil moisture', 'Infected seed source or spore transfer via wind'],
-    prevention: [
-      'Maintain 45cm line spacing for proper canopy ventilation',
-      'Use certified bio-treated seed varieties'
-    ],
-    treatments: {
-      organic: ['Apply Neem Seed Kernel Extract (5%) or Trichoderma viride @ 5g/Liter.'],
-      chemical: ['Spray Copper Oxychloride 50% WP @ 2.5g/L or Mancozeb @ 2g/L water.']
-    },
-    recommendedProducts: ['Blitox (Copper Oxychloride)', 'Saaf Fungicide', 'Kisan Bio-Neem'],
-    analyzedAt: new Date().toLocaleString(),
-    imageUrl: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=600&q=80'
-  };
-
-  savedReportsStore.unshift(report);
-  res.json(report);
-
+  
 
 // === AI CHATBOT & VOICE ASSISTANT API ===
 app.post('/api/ai/chatbot', async (req, res) => {
