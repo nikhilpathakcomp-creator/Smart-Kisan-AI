@@ -502,7 +502,7 @@ app.post('/api/agriculture/smart-irrigation', (req, res) => {
     cropStage: cropStage || 'Flowering & Fruit Setting',
     soilMoisturePercent: moisture,
     recommendation: moisture < 50
-      ? 'Irrigation Required: Soil moisture is below threshold (50%). Apply 35mm drip irrigation tomorrow morning between 6:00 AM - 8:00 AM.'
+      ? 'Irrigation Required: Soil moisture is below threshold (50%). Apply 3.5mm drip irrigation tomorrow morning between 6:00 AM - 8:00 AM.'
       : 'Soil Moisture Optimal: No immediate watering required. Next review in 48 hours.',
     waterVolumeLitersPerAcre: moisture < 50 ? 14000 : 0,
     nextWateringTime: moisture < 50 ? 'Tomorrow, 6:00 AM' : 'In 2 days',
