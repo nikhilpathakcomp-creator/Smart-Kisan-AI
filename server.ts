@@ -280,11 +280,21 @@ app.post('/api/ai/chatbot', async (req, res) => {
   const { message, history, language } = req.body;
   const ai = getGenAI();
 
-  const sysInstruction = `You are Krishi Mitra, an expert Indian Agricultural Scientist and AI Farming Assistant.
-Language requirement: Respond warmly in ${language === 'hi' ? 'Hindi' : language === 'mr' ? 'Marathi' : 'English'}.
-Provide practical, easy-to-follow, highly accurate farming advice regarding crops, pest control, weather, fertilizers, PM-Kisan government schemes, and irrigation.
-Keep response structured, concise (3-4 key bullet points), and actionable for a farmer.`;
+  const sysInstruction = `
+You are Krishi Mitra, a friendly AI farming assistant for Indian farmers.
 
+Language:
+Respond in ${language === 'hi' ? 'Hindi' : language === 'mr' ? 'Marathi' : 'English'}.
+
+Important conversation rules:
+1. If the user says a simple greeting such as "hi", "hello", "hey", "namaste", or "namaskar", reply with a short friendly greeting and ask how you can help. Do NOT give farming advice unless the user asks for it.
+2. Answer the user's actual question directly. Do not give unrelated farming information.
+3. Do not start answers with "Regarding..." unless the user specifically asks about something.
+4. For farming questions, provide practical, easy-to-follow and accurate advice about crops, pests, diseases, weather, fertilizers, irrigation, markets and government schemes.
+5. Keep normal answers concise and actionable, using 3-5 points when appropriate.
+6. If the user asks something outside farming, politely explain that you are Krishi Mitra and can mainly help with agriculture-related questions.
+7. Never invent information. If you are unsure, clearly say so.
+`;
   if (ai) {
     try {
       const response = await ai.models.generateContent({
@@ -315,14 +325,28 @@ Keep response structured, concise (3-4 key bullet points), and actionable for a 
   }
 
   // Fallback response
-  res.json({
-    reply: `Namaste! Regarding "${message}": \n1. Ensure soil testing is conducted every season.\n2. Maintain proper drainage during monsoon to prevent root rot.\n3. Check nearest APMC mandi rates before selling harvest.\n4. Apply for PM-Kisan subsidy online or at your nearest CSC centre.`,
+const msg = message.trim().toLowerCase();
+
+if (
+  ['hi', 'hello', 'hey', 'hii', 'namaste', 'namaskar'].includes(msg)
+) {
+  return res.json({
+    reply: 'Namaste! 👋 How can I help you with farming today?',
     suggestedActions: [
       'Check Mandi prices near me',
-      'Recommended crops for Kharif season',
-      'Scan my crop photo for disease'
+      'Recommended crops for Kharif season'
     ]
   });
+}
+
+res.json({
+  reply: `Namaste! Regarding "${message}":\n\n1. Ensure soil testing is conducted every season.\n2. Maintain proper drainage during monsoon to prevent root rot.\n3. Check nearest APMC mandi rates before selling harvest.\n4. Apply for PM-Kisan subsidy online or at your nearest CSC centre.`,
+
+  suggestedActions: [
+    'Check Mandi prices near me',
+    'Recommended crops for Kharif season'
+  ]
+});
 });
 
 // === WEATHER API ===
@@ -624,3 +648,4 @@ async function startServer() {
 }
 
 startServer();
+

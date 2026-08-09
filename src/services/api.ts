@@ -1,4 +1,4 @@
-import { DiseaseAnalysisResult, MandiPriceItem, User, WeatherData } from '../types';
+import { MandiPriceItem, User, WeatherData } from '../types';
 
 const API_BASE = import.meta.env.PROD
   ? 'https://smart-kisan-ai-euef.onrender.com'
@@ -29,26 +29,7 @@ export const api = {
     return res.json();
   },
 
-  // Disease Detection AI
-  async detectDisease(
-    imageBase64: string,
-    cropHint?: string,
-    language: string = 'en'
-  ): Promise<DiseaseAnalysisResult> {
-    const res = await fetch(`${API_BASE}/api/ai/disease-detect`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        imageBase64,
-        cropHint,
-        language,
-      }),
-    });
-
-    return res.json();
-  },
+ 
 
   // Chatbot
   async sendChatMessage(message: string, history: any[], language: string = 'en') {
