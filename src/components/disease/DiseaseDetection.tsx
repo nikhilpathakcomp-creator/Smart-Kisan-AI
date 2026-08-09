@@ -164,31 +164,7 @@ export const DiseaseDetection: React.FC = () => {
           </div>
         </div>
 
-        {/* Analyze Button */}
-        <button
-          id="disease-analyze-btn"
-          onClick={handleAnalyze}
-          disabled={!selectedImage || analyzing}
-          className={`w-full py-3 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all ${
-            analyzing
-              ? 'bg-emerald-800 text-emerald-200 cursor-wait'
-              : selectedImage
-              ? 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-98'
-              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-          }`}
-        >
-          {analyzing ? (
-            <>
-              <RefreshCw className="w-5 h-5 animate-spin text-emerald-300" />
-              <span>{t('analyzingImage')}</span>
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-5 h-5 text-amber-300" />
-              <span>Run AI Disease Diagnosis</span>
-            </>
-          )}
-        </button>
+        
       </div>
 
       {/* AI Diagnostic Result Report */}
