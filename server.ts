@@ -186,6 +186,50 @@ app.get('/api/auth/me', authenticateToken, (req, res) => {
 app.post('/api/ai/chatbot', async (req, res) => {
   const { message, history, language } = req.body;
   const ai = getGenAI();
+  const mandiKeywords = [
+  'mandi',
+  'market price',
+  'market rate',
+  'onion price',
+  'onion rate',
+  'भाव',
+  'बाजार भाव',
+  'कांदा भाव',
+  'कांद्याचा भाव'
+];
+
+const isMandiQuestion = mandiKeywords.some(keyword =>
+  message.toLowerCase().includes(keyword)
+);
+
+if (isMandiQuestion) {
+  const onionPrices = mandiPricesStore.filter(m =>
+    m.cropName.toLowerCase().includes('onion')
+  );
+
+  if (onionPrices.length > 0) {
+    const prices = onionPrices.slice(0, 5).map(m =>
+      `${m.mandiName}: ₹${m.modalPrice}/quintal`
+    );
+
+    return res.json({
+      reply: `Current Onion Mandi prices:\n\n${prices.join('\n')}`,
+      suggestedActions: [
+        'Show more Onion Mandi prices',
+        'Check Tomato Mandi price',
+        'Check Potato Mandi price'
+      ]
+    });
+  }
+
+  return res.json({
+    reply: 'Onion Mandi price data is currently unavailable.',
+    suggestedActions: [
+      'Try again later',
+      'Check another crop'
+    ]
+  });
+}
 
   const sysInstruction = `
 You are Krishi Mitra, a friendly AI farming assistant for Indian farmers.
