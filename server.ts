@@ -186,7 +186,45 @@ app.get('/api/auth/me', authenticateToken, (req, res) => {
 app.post('/api/ai/chatbot', async (req, res) => {
   const { message, history, language } = req.body;
   const ai = getGenAI();
-  
+  const msg = message.trim().toLowerCase();
+  const isMandiQuestion =
+  msg.includes('mandi') ||
+  msg.includes('market price') ||
+  msg.includes('market rate') ||
+  msg.includes('onion price') ||
+  msg.includes('onion rate') ||
+  msg.includes('check mandi prices') ||
+  msg.includes('mandi prices near me') ||
+  msg.includes('भाव') ||
+  msg.includes('बाजार भाव') ||
+  msg.includes('कांदा भाव') ||
+  msg.includes('कांद्याचा भाव');
+  if (isMandiQuestion) {
+  const mandiResults = [...mandiPricesStore];
+
+  if (mandiResults.length > 0) {
+    const prices = mandiResults.slice(0, 5).map((m: any) =>
+      `${m.mandiName} (${m.district}): ₹${m.modalPrice}/quintal`
+    );
+
+    return res.json({
+      reply: `Current Mandi prices:\n\n${prices.join('\n')}`,
+      suggestedActions: [
+        'What is the current Mandi price for Onion?',
+        'Check Tomato Mandi price',
+        'Check Potato Mandi price'
+      ]
+    });
+  }
+
+  return res.json({
+    reply: 'Mandi price data is currently unavailable.',
+    suggestedActions: [
+      'Try again later',
+      'Check another crop'
+    ]
+  });
+}
 
   const sysInstruction = `
 You are Krishi Mitra, a friendly AI farming assistant for Indian farmers.
@@ -233,7 +271,7 @@ Important conversation rules:
   }
 
   // Fallback response
-const msg = message.trim().toLowerCase();
+
 
 if (
   ['hi', 'hello', 'hey', 'hii', 'namaste', 'namaskar'].includes(msg)
