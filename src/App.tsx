@@ -10,7 +10,7 @@ import { AiChatbot } from './components/chatbot/AiChatbot';
 import { WeatherForecast } from './components/weather/WeatherForecast';
 import { CropRecommendation } from './components/crops/CropRecommendation';
 import { SmartIrrigation } from './components/irrigation/SmartIrrigation';
-import { FertilizerRecommendation } from './components/fertilizer/FertilizerRecommendation';
+
 import { MarketPrices } from './components/mandi/MarketPrices';
 import { GovernmentSchemes } from './components/schemes/GovernmentSchemes';
 import { FarmerProfile } from './components/profile/FarmerProfile';
@@ -46,6 +46,7 @@ function MainApp() {
   };
 
   const renderTabContent = () => {
+  console.log('ACTIVE TAB:', activeTab);
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard setActiveTab={setActiveTab} />;

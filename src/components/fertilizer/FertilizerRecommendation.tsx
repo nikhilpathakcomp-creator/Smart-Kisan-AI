@@ -3,8 +3,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { api } from '../../services/api';
 import { FertilizerRecommendationResult } from '../../types';
 import {
+  Camera,
   FlaskConical,
-  
   Sparkles,
   RefreshCw,
   ScanText,
@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 
 export const FertilizerRecommendation: React.FC = () => {
+  console.log("FERTILIZER COMPONENT LOADED");
+
   const { t } = useLanguage();
 
   const [cropName, setCropName] = useState('Onion');
@@ -26,16 +28,32 @@ export const FertilizerRecommendation: React.FC = () => {
   const [ocrResult, setOcrResult] = useState<any | null>(null);
 
   const handleCalculateGuide = async () => {
-    setLoading(true);
-    try {
-      const res = await api.getFertilizerGuide({ cropName, growthStage });
+  setLoading(true);
+
+  try {
+    const res = await api.getFertilizerGuide({
+      cropName,
+      growthStage,
+    });
+
+    if (
+      res &&
+      typeof res === 'object' &&
+      Array.isArray(res.recommendedFertilizers) &&
+      Array.isArray(res.safetyTips)
+    ) {
       setGuide(res);
-    } catch (err) {
-      console.error('Fertilizer guide error:', err);
-    } finally {
-      setLoading(false);
+    } else {
+      console.error('Invalid fertilizer API response:', res);
+      setGuide(null);
     }
-  };
+  } catch (err) {
+    console.error('Fertilizer guide error:', err);
+    setGuide(null);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleOcrUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,19 +76,10 @@ export const FertilizerRecommendation: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5 pb-8">
-      {/* Header */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-purple-50 text-purple-600">
-            <FlaskConical className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-slate-900">{t('fertilizer')} & OCR Bag Scanner</h2>
-            <p className="text-xs text-slate-500">NPK Nutrient Dosage Calculator & Fertilizer Label OCR Reader</p>
-          </div>
-        </div>
-      </div>
+  <div className="p-5 text-xl font-bold text-purple-700">
+    Fertilizer Guide Test
+  </div>
+);
 
       {/* Bag Label OCR Scanner Section */}
       <div className="bg-gradient-to-r from-purple-900 to-indigo-950 text-white rounded-2xl p-5 shadow-sm space-y-3">
@@ -208,5 +217,5 @@ export const FertilizerRecommendation: React.FC = () => {
         </div>
       )}
     </div>
-  );
 };
+

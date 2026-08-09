@@ -9,7 +9,7 @@ import {
   CloudSun,
   Sprout,
   Droplets,
-  FlaskConical,
+  
   TrendingUp,
   Landmark,
   Sparkles,
@@ -157,24 +157,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
             </div>
           </button>
 
-          {/* Tool 6: Fertilizer Guide */}
-          <button
-            id="tool-fertilizer"
-            onClick={() => setActiveTab('fertilizer')}
-            className="group bg-white p-4 rounded-[1.25rem] border border-slate-200/80 hover:border-emerald-600 hover:shadow-md transition-all text-left flex flex-col justify-between"
-          >
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-3 group-hover:bg-purple-700 group-hover:text-white transition-colors">
-              <FlaskConical className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-800 text-sm group-hover:text-purple-700 transition-colors">
-                {t('fertilizer')} & OCR
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5 font-normal line-clamp-2">
-                NPK dosage calculator & bag scanner.
-              </p>
-            </div>
-          </button>
+          
+          
         </div>
       </div>
 
